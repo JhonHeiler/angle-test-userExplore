@@ -1,0 +1,63 @@
+<div class="container">
+    <div class="search">
+        <input type="text" [(ngModel)]="searchTerm" (input)="filterUsers()" placeholder="Buscar por nombre o ID" />
+    </div>
+
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Nombre de usuario</th>
+                <th>Email</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of filteredUsers | slice:(currentPage - 1) * itemsPerPage : currentPage * itemsPerPage">
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    <button (click)="selectUser(user)">Seleccionar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="selectedUser" class="user-details">
+        <h2>Datos del Usuario</h2>
+        <p><strong>ID:</strong> {{ selectedUser.id }}</p>
+        <p><strong>Nombre:</strong> {{ selectedUser.name }}</p>
+        <p><strong>Nombre de Usuario:</strong> {{ selectedUser.username }}</p>
+        <p><strong>Email:</strong> {{ selectedUser.email }}</p>
+    </div>
+
+    <div *ngIf="userPosts.length > 0" class="user-posts">
+        <h2>Posts del Usuario</h2>
+        <ul>
+            <li *ngFor="let post of userPosts">
+                <h3>{{ post.title }}</h3>
+                <p>{{ post.body }}</p>
+                <button (click)="loadCommentsForPost(post.id)">Ver Comentarios</button>
+            </li>
+        </ul>
+    </div>
+
+    <div *ngIf="postComments.length > 0" class="post-comments">
+        <h2>Comentarios del Post</h2>
+        <ul>
+            <li *ngFor="let comment of postComments">
+                <p><strong>Nombre:</strong> {{ comment.name }}</p>
+                <p><strong>Email:</strong> {{ comment.email }}</p>
+                <p>{{ comment.body }}</p>
+            </li>
+        </ul>
+    </div>
+
+    <div class="pagination">
+        <button (click)="currentPage = currentPage - 1" [disabled]="currentPage === 1">Anterior</button>
+        <button (click)="currentPage = currentPage + 1" [disabled]="currentPage * itemsPerPage >= filteredUsers.length">Siguiente</button>
+    </div>
+</div>

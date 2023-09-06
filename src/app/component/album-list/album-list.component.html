@@ -1,0 +1,8 @@
+<div>
+    <h1>Álbumes</h1>
+    <ul>
+        <li *ngFor="let album of albums">
+            <button (click)="openAlbumDialog(album)">Ver Álbum</button> {{ album.title }}
+        </li>
+    </ul>
+</div>
